@@ -4,10 +4,9 @@ using UnityEngine;
 public class Timer
 {
 	private float _timeLimit;
-	private float _fallTime;
-
 	private MonoBehaviour _coroutineRunner;
 
+	private float _time;
 	private Coroutine _process;
 
 	public Timer(MonoBehaviour coroutineRunner, float timeLimit)
@@ -24,7 +23,7 @@ public class Timer
 			return false;
 		}
 
-		elapsedTime = _fallTime;
+		elapsedTime = _time;
 		return true;
 	}
 
@@ -46,14 +45,14 @@ public class Timer
 
 	private IEnumerator Process()
 	{
-		_fallTime = 0;
+		_time = 0;
 
-		while (_fallTime < _timeLimit)
+		while (_time < _timeLimit)
 		{
-			_fallTime += Time.deltaTime;
+			_time += Time.deltaTime;
 
-			if (_fallTime > _timeLimit)
-				_fallTime = _timeLimit;
+			if (_time > _timeLimit)
+				_time = _timeLimit;
 
 			yield return null;
 		}

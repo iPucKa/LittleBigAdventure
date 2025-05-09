@@ -11,7 +11,7 @@ public class CharacterView : MonoBehaviour
 	[SerializeField] private Animator _animator;
 	[SerializeField] private AudioSource _explosionSound;
 
-	private bool _isDeadAnimated;
+	private bool _isDeathAnimated;
 
 	private void Update()
 	{
@@ -19,10 +19,10 @@ public class CharacterView : MonoBehaviour
 		_animator.SetFloat(VelocityYKey, _character.Velocity.y);
 		_animator.SetBool(IsGroundedKey, _character.IsGrounded());
 
-		if (_character.IsDead && _isDeadAnimated == false)
+		if (_character.IsDead && _isDeathAnimated == false)
 		{ 
 			_animator.SetTrigger(DeadKey); 
-			_isDeadAnimated = true;
+			_isDeathAnimated = true;
 			_explosionSound.Play();
 		}
 	}

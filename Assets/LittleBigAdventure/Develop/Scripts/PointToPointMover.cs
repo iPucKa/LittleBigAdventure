@@ -8,6 +8,9 @@ public class PointToPointMover : MonoBehaviour
 	[SerializeField] private float _timeBetweenMoves;
 	[SerializeField] private float _speed;
 
+	private const float Frequency = 10f;
+	private const float Amplitude = 0.3f;
+
 	private Queue<Vector3> _pointsPositions;
 	private Vector3 _currentTarget;
 
@@ -61,7 +64,7 @@ public class PointToPointMover : MonoBehaviour
 
 	private Vector3 SetPosition(float xPosition, float progress)
 	{
-		float yPosition = _startYPosition + 0.3f * Mathf.Sin(progress * 10f);
+		float yPosition = _startYPosition + Amplitude * Mathf.Sin(progress * Frequency);
 
 		return new Vector3(xPosition, yPosition, transform.position.z);
 	}

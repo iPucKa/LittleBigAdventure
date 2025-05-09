@@ -15,10 +15,10 @@ public class DirectionalJumper
 	private bool _jumpPressed;
 
 	public DirectionalJumper(
-		ObstacleChecker groundChecker, 
-		ObstacleChecker ceilChecker, 
-		List<ObstacleChecker> wallCheckers, 
-		float yVelocityForJump, 
+		ObstacleChecker groundChecker,
+		ObstacleChecker ceilChecker,
+		List<ObstacleChecker> wallCheckers,
+		float yVelocityForJump,
 		float gravity)
 	{
 		_groundChecker = groundChecker;
