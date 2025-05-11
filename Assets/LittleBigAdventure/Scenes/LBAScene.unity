@@ -338,7 +338,7 @@ MonoBehaviour:
   _wallCheckers:
   - {fileID: 747390928}
   - {fileID: 1357890341}
-  _yVelocityForJump: 25
+  _yVelocityForJump: 40
   _gravity: 80
   _speed: 9
 --- !u!1 &302675646

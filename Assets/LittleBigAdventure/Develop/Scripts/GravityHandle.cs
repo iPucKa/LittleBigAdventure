@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class GravityHandle
 {
 	private float _gravity;
@@ -11,12 +9,12 @@ public class GravityHandle
 		_gravity = gravity;
 	}
 
-	public void ApplyGravity(ref float verticalVelocity)
+	public void ApplyGravity(ref float yVelocity)
 	{
-		if (_groundChecker.IsTouches() && verticalVelocity <= 0)
-			verticalVelocity = 0;
+		if (_groundChecker.IsTouches() && yVelocity <= 0)
+			yVelocity = 0;
 		
 		else
-			verticalVelocity -= _gravity * Time.deltaTime;
+			yVelocity -= _gravity * 0.3f;
 	}
 }
