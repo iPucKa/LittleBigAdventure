@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class GravityHandle
 {
 	private float _gravity;
@@ -15,6 +17,6 @@ public class GravityHandle
 			yVelocity = 0;
 		
 		else
-			yVelocity -= _gravity * 0.3f;
+			yVelocity -= _gravity * Time.deltaTime;
 	}
 }

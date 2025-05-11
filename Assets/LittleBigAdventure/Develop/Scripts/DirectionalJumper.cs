@@ -6,6 +6,7 @@ public class DirectionalJumper
 	private ObstacleChecker _groundChecker;
 	private ObstacleChecker _ceilChecker;
 	private List<ObstacleChecker> _wallCheckers;
+	private VelocityManager _velocityManager;
 
 	private float _yVelocityForJump;
 	private float _yVelocityForWallJump;
@@ -17,11 +18,13 @@ public class DirectionalJumper
 		ObstacleChecker groundChecker,
 		ObstacleChecker ceilChecker,
 		List<ObstacleChecker> wallCheckers,
+		VelocityManager velocityManager,
 		float yVelocityForJump)
 	{
 		_groundChecker = groundChecker;
 		_ceilChecker = ceilChecker;
 		_wallCheckers = wallCheckers;
+		_velocityManager = velocityManager;
 		_yVelocityForJump = yVelocityForJump;
 		_yVelocityForWallJump = yVelocityForJump / 1.5f;
 	}
@@ -42,8 +45,10 @@ public class DirectionalJumper
 	private void HandleCeil()
 	{
 		if (_ceilChecker.IsTouches())
-		
-			_yVelocity = Mathf.Min(0, _yVelocity);		
+		{
+			_yVelocity = Mathf.Min(0, _yVelocity);
+			SetVerticalVelocity(_yVelocity);
+		}		
 	}
 
 	private void HandleGroundJump()
@@ -51,7 +56,10 @@ public class DirectionalJumper
 		if (_jumpPressed)
 		{
 			if (_groundChecker.IsTouches())
+			{
 				_yVelocity = _yVelocityForJump;
+				SetVerticalVelocity(_yVelocity);
+			}
 		}
 	}
 
@@ -61,7 +69,12 @@ public class DirectionalJumper
 			for (int i = 0; i < _wallCheckers.Count; i++)
 			{
 				if (_wallCheckers[i].IsTouches())
+				{
 					_yVelocity = _yVelocityForWallJump;
+					SetVerticalVelocity(_yVelocity);
+				}
 			}
-	}	
+	}
+
+	private void SetVerticalVelocity(float yVelocity) => _velocityManager.SetVerticalVelocity(yVelocity);
 }

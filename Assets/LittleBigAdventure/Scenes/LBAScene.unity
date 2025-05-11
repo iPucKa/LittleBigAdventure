@@ -338,8 +338,9 @@ MonoBehaviour:
   _wallCheckers:
   - {fileID: 747390928}
   - {fileID: 1357890341}
-  _yVelocityForJump: 40
+  _yVelocityForJump: 25
   _gravity: 80
+  _wind: 10
   _speed: 9
 --- !u!1 &302675646
 GameObject:

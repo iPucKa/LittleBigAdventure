@@ -10,10 +10,12 @@ public class Character : MonoBehaviour
 
 	[SerializeField] private float _yVelocityForJump;
 	[SerializeField] private float _gravity;
+	[SerializeField] private float _wind;
 
 	[SerializeField] private float _speed;
 
 	private GravityHandle _gravityHandle;
+	private WindHandle _windHandle;
 	private DirectionalJumper _jumper;
 	private DirectionalMover _mover;
 
@@ -29,18 +31,20 @@ public class Character : MonoBehaviour
 
 	private void Awake()
 	{
+		_windHandle = new WindHandle(_groundChecker, _wind);
 		_gravityHandle = new GravityHandle(_groundChecker, _gravity);
+		_velocityManager = new VelocityManager(_gravityHandle, _windHandle);
 
-		_jumper = new DirectionalJumper(_groundChecker, _ceilChecker, _wallCheckers, _yVelocityForJump);
-		_mover = new DirectionalMover(_speed);
+		_jumper = new DirectionalJumper(_groundChecker, _ceilChecker, _wallCheckers, _velocityManager, _yVelocityForJump);
+		_mover = new DirectionalMover(_velocityManager, _speed);
 
-		_velocityManager = new VelocityManager(_gravityHandle, _jumper, _mover);
 
 		_rotator = new DirectionalRotator(_rigidbody, transform);
 	}
 
 	private void Update()
 	{
+		_jumper.Update(Time.deltaTime);
 		_velocityManager.Update(Time.deltaTime);
 
 		_rotator.Update(Time.deltaTime);
