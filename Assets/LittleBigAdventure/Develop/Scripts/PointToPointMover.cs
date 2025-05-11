@@ -8,13 +8,12 @@ public class PointToPointMover : MonoBehaviour
 	[SerializeField] private float _timeBetweenMoves;
 	[SerializeField] private float _speed;
 
-	private const float Frequency = 10f;
-	private const float Amplitude = 0.3f;
+	private PathForMovingCalculator _pathHandle;
+	private Mover _mover;
 
 	private Queue<Vector3> _pointsPositions;
 	private Vector3 _currentTarget;
-
-	private float _startYPosition;
+	private Vector3 _oldPosition;
 
 	private void Awake()
 	{
@@ -23,7 +22,8 @@ public class PointToPointMover : MonoBehaviour
 		foreach (Transform point in _points)
 			_pointsPositions.Enqueue(point.position);
 
-		_startYPosition = transform.position.y;
+		_mover = new Mover(transform, _speed);
+		_pathHandle = new PathForMovingCalculator(this);
 
 		StartCoroutine(ProcessMove());
 	}
@@ -40,14 +40,16 @@ public class PointToPointMover : MonoBehaviour
 			float timeForMovement = (endPosition - startPosition).magnitude / _speed;
 
 			float progress = 0;
-			float xPosition = 0;
+			float xNewPosition = 0;
 
 			while (progress < timeForMovement)
 			{
-				xPosition = Vector3.Lerp(startPosition, endPosition, progress / timeForMovement).x;
+				_oldPosition = transform.position;
+
+				xNewPosition = Vector3.Lerp(startPosition, endPosition, progress / timeForMovement).x;
 				progress += Time.deltaTime;
 
-				transform.position = SetPosition(xPosition, progress);
+				_pathHandle.FindDirection(_oldPosition, xNewPosition, progress);
 
 				yield return null;
 			}
@@ -56,16 +58,16 @@ public class PointToPointMover : MonoBehaviour
 		}
 	}
 
+	private void Update()
+	{
+		_mover.Update(Time.deltaTime);
+	}
+
 	private void SwitchPoint()
 	{
 		_currentTarget = _pointsPositions.Dequeue();
 		_pointsPositions.Enqueue(_currentTarget);
 	}
 
-	private Vector3 SetPosition(float xPosition, float progress)
-	{
-		float yPosition = _startYPosition + Amplitude * Mathf.Sin(progress * Frequency);
-
-		return new Vector3(xPosition, yPosition, transform.position.z);
-	}
+	public void SetDirection(Vector3 direction) => _mover.SetDirection(direction);
 }

@@ -6,10 +6,10 @@ public class DirectionalJumper
 	private ObstacleChecker _groundChecker;
 	private ObstacleChecker _ceilChecker;
 	private List<ObstacleChecker> _wallCheckers;
+	private GravityHandle _gravityHandle;
 
 	private float _yVelocityForJump;
 	private float _yVelocityForWallJump;
-	private float _gravity;
 
 	private float _yVelocity;
 	private bool _jumpPressed;
@@ -18,27 +18,29 @@ public class DirectionalJumper
 		ObstacleChecker groundChecker,
 		ObstacleChecker ceilChecker,
 		List<ObstacleChecker> wallCheckers,
-		float yVelocityForJump,
-		float gravity)
+		GravityHandle gravityHandle,
+		float yVelocityForJump)
 	{
 		_groundChecker = groundChecker;
 		_ceilChecker = ceilChecker;
 		_wallCheckers = wallCheckers;
+		_gravityHandle = gravityHandle;
 		_yVelocityForJump = yVelocityForJump;
-		_yVelocityForWallJump = yVelocityForJump / 1.5f;
-		_gravity = gravity;
+		_yVelocityForWallJump = yVelocityForJump / 1.5f;		
 	}
 
 	public float CurrentVerticalVelocity => _yVelocity;
+	public bool IsJumping => _jumpPressed;
 
 	public void SetJumpCondition(bool isJumpPressed) => _jumpPressed = isJumpPressed;
 
 	public void Update(float deltaTime)
 	{
-		HandleGravity();
-		HandleGroundJump();
-		HandWallJump();
+		_gravityHandle.ApplyGravity(ref _yVelocity);
+
 		HandleCeil();
+		HandleGroundJump();
+		HandleWallJump();
 	}
 
 	public bool IsGrounded() => _groundChecker.IsTouches();
@@ -51,11 +53,11 @@ public class DirectionalJumper
 
 	private void HandleGroundJump()
 	{
-		if (_jumpPressed && _groundChecker.IsTouches())
+		if (_jumpPressed && _groundChecker.IsTouches())		
 			_yVelocity = _yVelocityForJump;
 	}
 
-	private void HandWallJump()
+	private void HandleWallJump()
 	{
 		if (_jumpPressed)
 			for (int i = 0; i < _wallCheckers.Count; i++)
@@ -63,13 +65,5 @@ public class DirectionalJumper
 				if (_wallCheckers[i].IsTouches())
 					_yVelocity = _yVelocityForWallJump;
 			}			
-	}
-
-	private void HandleGravity()
-	{
-		if (_groundChecker.IsTouches() && _yVelocity <= 0)
-			_yVelocity = 0f;
-		else
-			_yVelocity -= _gravity * Time.deltaTime;
 	}
 }

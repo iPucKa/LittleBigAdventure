@@ -13,6 +13,7 @@ public class Character : MonoBehaviour
 
 	[SerializeField] private float _speed;
 
+	private GravityHandle _gravityHandle;
 	private DirectionalJumper _jumper;
 	private DirectionalMover _mover;
 	private DirectionalRotator _rotator;
@@ -25,8 +26,11 @@ public class Character : MonoBehaviour
 
 	private void Awake()
 	{
-		_jumper = new DirectionalJumper(_groundChecker, _ceilChecker, _wallCheckers, _yVelocityForJump, _gravity);
-		_mover = new DirectionalMover(_rigidbody, _jumper, _speed);
+		_gravityHandle = new GravityHandle(_groundChecker, _gravity);
+
+		_jumper = new DirectionalJumper(_groundChecker, _ceilChecker, _wallCheckers, _gravityHandle, _yVelocityForJump);
+		_mover = new DirectionalMover(_rigidbody, _jumper, _gravityHandle, _speed);
+
 		_rotator = new DirectionalRotator(_rigidbody, transform);
 	}
 

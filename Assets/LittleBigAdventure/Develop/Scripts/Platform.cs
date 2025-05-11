@@ -6,7 +6,7 @@ public class Platform : MonoBehaviour
 	[SerializeField] private float _timeToFall;
 	[SerializeField] private float _fallingSpeed;
 
-	private TransformMover _mover;
+	private Mover _mover;
 	private Timer _timer;
 
 	private bool _isFalling;
@@ -17,7 +17,7 @@ public class Platform : MonoBehaviour
 
 	private void Awake()
 	{
-		_mover = new TransformMover(transform, _fallingSpeed);
+		_mover = new Mover(transform, _fallingSpeed);
 		_timer = new Timer(this, _timeToFall);
 	}
 
@@ -48,6 +48,9 @@ public class Platform : MonoBehaviour
 		}
 
 		if (_timer.InProcess(out float elapsedTime) && elapsedTime >= _timeToFall)
+		{
 			_isFalling = true;
+			_mover.SetDirection(Vector2.down);
+		}
 	}
 }
