@@ -14,7 +14,7 @@ public class GravityHandle
 	public void ApplyGravity(ref float yVelocity)
 	{
 		if (_groundChecker.IsTouches() && yVelocity <= 0)
-			yVelocity = 0;
+			yVelocity = 0;		
 		
 		else
 			yVelocity -= _gravity * Time.deltaTime;

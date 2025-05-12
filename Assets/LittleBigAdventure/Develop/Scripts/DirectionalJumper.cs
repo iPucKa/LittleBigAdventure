@@ -76,5 +76,5 @@ public class DirectionalJumper
 			}
 	}
 
-	private void SetVerticalVelocity(float yVelocity) => _velocityManager.SetVerticalVelocity(yVelocity);
+	private void SetVerticalVelocity(float yVelocity) => _velocityManager.SetVerticalVelocity(yVelocity);	
 }

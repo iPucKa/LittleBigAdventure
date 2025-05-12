@@ -8766,7 +8766,7 @@ MonoBehaviour:
     m_Bits: 64
   _collider: {fileID: 270529379}
   _direction: {x: 0, y: 1}
-  _distanceToCheck: 0.1
+  _distanceToCheck: 0.01
 --- !u!1 &1884846854
 GameObject:
   m_ObjectHideFlags: 0
